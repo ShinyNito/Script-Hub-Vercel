@@ -8,7 +8,7 @@ interface PreviewComponentProps {
 
 const PreviewComponent: React.FC<PreviewComponentProps> = ({ url }) => {
   const [data, setData] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,12 +33,14 @@ const PreviewComponent: React.FC<PreviewComponentProps> = ({ url }) => {
 
     fetchData();
   }, [url]);
-
+  if (!url) return <div> <h1>预览:</h1></div>;
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className='w-full overflow-auto  h-full  '>
+    <div className='w-full overflow-auto h-ful'>
+       {/* 需要将字体调大 */}
+       <h1 className='py-2'>预览:</h1>
        <CodeBlock code={data ?? ""} url={url} />
     </div>
   );

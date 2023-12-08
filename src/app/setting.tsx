@@ -4,6 +4,7 @@ import { Listbox, Transition, Disclosure } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 import Checkbox from "@/components/Checkbox";
 import AutoExpandingTextarea from "@/components/AutoExpandingTextarea";
+import { Textarea } from "@nextui-org/react";
 
 //来源类型
 const sourceTypes = [
@@ -199,7 +200,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
     }
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    useMemo(() => {
+    useEffect(() => {
         const result: { [key: string]: string } = {};
         for (const key in state) {
             if (Object.prototype.hasOwnProperty.call(state, key)) {
@@ -222,6 +223,10 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
         if (state.targetType === "") {
             return
         }
+        // 如果没有来源地址，就不要传递了
+        if (state.source === "") {
+            return
+        }
         const params = new URLSearchParams(result);
         // 如果params为空，就不要传递了
         if (params.toString()) {
@@ -230,8 +235,6 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
             if (finalFileName === "") {
                 const fileNamePattern = /([^\/]+)(?=\.[^\.]+$)/;
                 const fileNameResult = fileNamePattern.exec(state.source);
-                console.log(fileNameResult);
-
                 if (fileNameResult === null) {
                     return
                 }
@@ -258,10 +261,8 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
             if (state.sourceType === "rule-set") {
                 onUrlChange(`${location.origin}/rule/${encodeURIComponent(state.source)}/${finalFileName}?${params.toString()}`);
             } else {
-                const url = `${location.origin}/file/${encodeURIComponent(state.source)}/${finalFileName}?${params.toString()}`;
-                onUrlChange(url);
+                onUrlChange(`${location.origin}/file/${encodeURIComponent(state.source)}/${finalFileName}?${params.toString()}`);
             }
-
         }
     }, [state, onUrlChange]);
 
@@ -612,18 +613,25 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                 }
 
                 {/* 文件名 */}
-                <div className="col-span-full mt-2">
-                    <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                        文件名
-                    </label>
-                    <div className="mt-2">
-                        <AutoExpandingTextarea
-                            value={state.fileName}
-                            onChange={setFileName}
-                        />
-                    </div>
-                </div>
-
+                <Disclosure>
+                    {({ open }) => (
+                        <>
+                            <Disclosure.Button className="mt-2 flex w-full justify-between rounded-lg bg-indigo-100 px-4 py-2 text-left text-sm font-medium text-indigo-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500/75">
+                                <span>文件名</span>
+                                <ChevronUpIcon
+                                    className={`${open ? '-rotate-180' : ''
+                                        } h-5 w-5 text-indigo-500 transition-transform duration-200`}
+                                />
+                            </Disclosure.Button>
+                            <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                                    <AutoExpandingTextarea
+                                    value={state.fileName}
+                                    onChange={setFileName}
+                                />
+                            </Disclosure.Panel>
+                        </>
+                    )}
+                </Disclosure>
                 {/* 重写相关 */}
                 {
                     // 如果来源类型不是规则集
@@ -675,7 +683,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-{}                                                                    <div>根据关键词排除重写(即添加注释符#) 多关键词以{`"+"`}分隔</div>
+                                                                    { }                                                                    <div>根据关键词排除重写(即添加注释符#) 多关键词以{`"+"`}分隔</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.excludeRewrite}
                                                                         onChange={setExcludeRewrite}
@@ -712,7 +720,6 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                             </>
                                         )}
                                     </Disclosure>
-
                                 </div>
                             </div>
                             <div className="w-full mt-2">
