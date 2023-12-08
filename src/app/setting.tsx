@@ -263,7 +263,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
             }
 
         }
-    }, [state]);
+    }, [state, onUrlChange]);
 
     const targetTypeOptions = useMemo(() => {
         switch (state.sourceType) {
@@ -539,7 +539,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
                                                                     <div>
-                                                                        根据关键词为脚本启用脚本转换(多关键词以"+"分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗)
+                                                                        根据关键词为脚本启用脚本转换(多关键词以{`"+"`}分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗)
                                                                     </div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.scriptConversion1}
@@ -654,7 +654,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                    <div>根据关键词保留重写(即去掉注释符#) 多关键词以"+"分隔</div>
+                                                                    <div>根据关键词保留重写(即去掉注释符#) 多关键词以{`"+"`}分隔</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.keepRewrite}
                                                                         onChange={setKeepRewrite}
@@ -675,7 +675,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                    <div>根据关键词排除重写(即添加注释符#) 多关键词以"+"分隔</div>
+{}                                                                    <div>根据关键词排除重写(即添加注释符#) 多关键词以{`"+"`}分隔</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.excludeRewrite}
                                                                         onChange={setExcludeRewrite}
@@ -739,7 +739,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                    <div>添加 MITM 主机名 多主机名以","分隔</div>
+                                                                    <div>添加 MITM 主机名 多主机名以{`","`}分隔</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.addMitmHosts}
                                                                         onChange={setAddMitmHosts}
@@ -760,7 +760,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                    <div>从已有MITM主机名中删除主机名 多主机名以","分隔(需要传入完整主机名)</div>
+                                                                    <div>从已有MITM主机名中删除主机名 多主机名以{`"+"`}分隔(需要传入完整主机名)</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.removeMitmHosts}
                                                                         onChange={setRemoveMitmHosts}
@@ -802,7 +802,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                    <div>根据关键词锁定cron脚本配合参数cronexp= 修改定时任务的cron表达式 多关键词用"+"分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用"."或"%20"替代</div>
+                                                                    <div>根据关键词锁定cron脚本配合参数cronexp= 修改定时任务的cron表达式 多关键词用{`"+"`}分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用{`"."`}或{`"%20"`}替代</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.modifyCron}
                                                                         onChange={setModifyCron}
@@ -865,7 +865,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                     />
                                                                 </Disclosure.Button>
                                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                    <div>arg= 根据关键词锁定脚本配合参数argv= 修改argument=的值 多关键词用"+"分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中 "+"必须用"t;add;"替代。</div>
+                                                                    <div>arg= 根据关键词锁定脚本配合参数argv= 修改argument=的值 多关键词用{`"+"`}分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中 {`"+"`}必须用{`"t;add;"`}替代。</div>
                                                                     <AutoExpandingTextarea
                                                                         value={state.modifyArg}
                                                                         onChange={setModifyArg}
@@ -939,7 +939,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                         />
                                                                     </Disclosure.Button>
                                                                     <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                        <div>根据关键词保留规则(即去掉注释符#) 多关键词以"+"分隔</div>
+                                                                        <div>根据关键词保留规则(即去掉注释符#) 多关键词以{`"+"`}分隔</div>
                                                                         <AutoExpandingTextarea
                                                                             value={state.keepRule}
                                                                             onChange={setKeepRule}
@@ -960,7 +960,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                                         />
                                                                     </Disclosure.Button>
                                                                     <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                                                        <div>根据关键词排除规则(即添加注释符#) 多关键词以"+"分隔</div>
+                                                                        <div>根据关键词排除规则(即添加注释符#) 多关键词以{`"+"`}分隔</div>
                                                                         <AutoExpandingTextarea
                                                                             value={state.excludeRule}
                                                                             onChange={setExcludeRule}
@@ -1009,7 +1009,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                                 </Disclosure.Button>
                                                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
                                                     <div>
-                                                        根据关键词开启 Surge 的 SNI 扩展匹配(extended-matching) 多关键词以"+"分隔
+                                                        根据关键词开启 Surge 的 SNI 扩展匹配(extended-matching) 多关键词以{`"+"`}分隔
                                                     </div>
                                                     <AutoExpandingTextarea
                                                         value={state.sniExtendedMatching}
