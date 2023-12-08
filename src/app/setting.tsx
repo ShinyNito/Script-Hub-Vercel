@@ -4,7 +4,7 @@ import { Listbox, Transition, Disclosure } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 import Checkbox from "@/components/Checkbox";
 import AutoExpandingTextarea from "@/components/AutoExpandingTextarea";
-import { Textarea } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
 
 //来源类型
 const sourceTypes = [
@@ -387,128 +387,43 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                     </div>
                 </div>
                 {/* 来源地址 ListBox */}
-                <div className="col-span-full mt-2">
-                    <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                        来源地址
-                    </label>
-                    <div className="mt-2">
-                        <Listbox value={state.sourceType} onChange={setSourceType}>
-                            <div className="relative mt-1">
-                                <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-600 sm:text-sm">
-                                    <span className="block truncate">{
-                                        state.sourceType ? sourceTypes.find((s) => s.value === state.sourceType)?.name : "请选择来源类型"
-                                    }</span>
-                                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                        <ChevronUpDownIcon
-                                            className="h-5 w-5 text-gray-400"
-                                            aria-hidden="true"
-                                        />
-                                    </span>
-                                </Listbox.Button>
-                                <Listbox.Options className="z-20 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                    {sourceTypes.map((s, i) => (
-                                        <Transition
-                                            as={Fragment}
-                                            key={i}
-                                            enter="transition ease-out duration-300"
-                                            enterFrom="opacity-0"
-                                            enterTo="opacity-100"
-                                            leave="transition ease-in duration-200"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0"
-                                        >
-                                            <Listbox.Option
-                                                key={i}
-                                                className={({ active }) =>
-                                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-indigo-300  text-indigo-900' : 'text-gray-900'
-                                                    }`
-                                                }
-                                                value={s.value}
-                                            >
-                                                {({ selected }) => (
-                                                    <>
-                                                        <span
-                                                            className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                                                }`}
-                                                        >
-                                                            {s.name}
-                                                        </span>
-                                                        {selected ? (
-                                                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
-                                                                <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                            </span>
-                                                        ) : null}
-                                                    </>
-                                                )}
-                                            </Listbox.Option>
-                                        </Transition>
-
-                                    ))}
-                                </Listbox.Options>
-                            </div>
-                        </Listbox>
-                    </div>
+                <div className="col-span-full pt-2">
+                    <Select
+                        label="来源类型"
+                        placeholder="请选择来源类型"
+                        labelPlacement="outside"
+                        value={state.sourceType}
+                        onChange={(e) => {
+                            setSourceType(e.target.value as string);    
+                        }}
+                    >
+                        {sourceTypes.map((animal) => (
+                            <SelectItem key={animal.value} value={animal.value}>
+                                {animal.name}
+                            </SelectItem>
+                        ))}
+                    </Select>
                 </div>
                 {/* 目标类型 ListBox*/}
                 {
                     // 如果有来源类型，才显示目标
-                    state.sourceType ? <div className="col-span-full mt-2">
-                        <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                            目标类型
-                        </label>
-                        <div className="mt-2">
-                            <Listbox value={state.targetType} onChange={setTargetType}>
-                                <div className="relative mt-1">
-                                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-600 sm:text-sm">
-                                        <span className="block truncate">{
-                                            state.targetType ? targetTypeOptions.find((s) => s.value === state.targetType)?.label : "请选择目标类型"
-                                        }</span>
-                                        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                            <ChevronUpDownIcon
-                                                className="h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                            />
-                                        </span>
-                                    </Listbox.Button>
-                                    <Transition
-                                        as={Fragment}
-                                        leave="transition ease-in duration-100"
-                                        leaveFrom="opacity-100"
-                                        leaveTo="opacity-0"
-                                    >
-                                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                            {targetTypeOptions.map((s, i) => (
-                                                <Listbox.Option
-                                                    key={i}
-                                                    className={({ active }) =>
-                                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-indigo-300  text-indigo-900' : 'text-gray-900'
-                                                        }`
-                                                    }
-                                                    value={s.value}
-                                                >
-                                                    {({ selected }) => (
-                                                        <>
-                                                            <span
-                                                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                                                    }`}
-                                                            >
-                                                                {s.label}
-                                                            </span>
-                                                            {selected ? (
-                                                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-indigo-600">
-                                                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                                </span>
-                                                            ) : null}
-                                                        </>
-                                                    )}
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </Transition>
-                                </div>
-                            </Listbox>
-                        </div>
-
+                    state.sourceType ? 
+                    <div className="col-span-full pt-2">
+                        <Select
+                        label="目标类型"
+                        placeholder="请选择目标类型"
+                        labelPlacement="outside"
+                        value={state.targetType}
+                        onChange={(e) => {
+                            setTargetType(e.target.value as string);    
+                        }}
+                    >
+                        {targetTypeOptions.map((animal) => (
+                            <SelectItem key={animal.value} value={animal.value}>
+                                {animal.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
                     </div> : null
                 }
                 {/* 脚本转换 */}
@@ -624,7 +539,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                                 />
                             </Disclosure.Button>
                             <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                                    <AutoExpandingTextarea
+                                <AutoExpandingTextarea
                                     value={state.fileName}
                                     onChange={setFileName}
                                 />

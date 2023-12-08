@@ -57,7 +57,7 @@ export default function Home() {
     <>
       {(width <= breakpoint) ? (
         <>
-          <Navbar className="bg-white shadow-lg">
+          <Navbar className="shadow-lg">
             <NavbarContent className="" justify="start">
 
             </NavbarContent>
