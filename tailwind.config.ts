@@ -23,7 +23,6 @@ const config: Config = {
       "fade-up": {
         "0%": {
           opacity: "0",
-          transform: "translateY(10px)",
         },
         "80%": {
           opacity: "0.6",

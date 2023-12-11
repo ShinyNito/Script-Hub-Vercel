@@ -1,4 +1,5 @@
 import CodeBlock from '@/components/CodeBlock';
+import { Card, CardBody, Skeleton } from '@nextui-org/react';
 import React, { useState, useEffect } from 'react';
 
 interface PreviewComponentProps {
@@ -33,16 +34,18 @@ const PreviewComponent: React.FC<PreviewComponentProps> = ({ url }) => {
 
     fetchData();
   }, [url]);
-  if (!url) return <div> <h1>预览:</h1></div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Skeleton></Skeleton>;
   if (error) return <div>Error: {error}</div>;
-
   return (
-    <div className='w-full overflow-auto h-ful'>
-       {/* 需要将字体调大 */}
-       <h1 className='py-2'>预览:</h1>
-       <CodeBlock code={data ?? ""} url={url} />
-    </div>
+    <Card className="lg:col-span-2 h-full overflow-y-auto lg:row-span-3 lg:mt-0 flex-0">
+      <CardBody>
+        <div className='w-full overflow-auto h-full '>
+          <h1 className='py-2'>预览:</h1>
+            <CodeBlock code={data ?? ""} url={url} />
+        </div>
+      </CardBody>
+    </Card>
+
   );
 };
 

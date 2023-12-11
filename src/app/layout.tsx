@@ -19,9 +19,10 @@ export default function RootLayout({
     <html lang="zh-cn" className='h-full'>
       <body className={inter.className + ` h-full `}>
         <Providers>
-          {children}
+          <main className="dark text-foreground bg-background ">
+            {children}
+          </main>
         </Providers>
-
       </body>
     </html>
   )
