@@ -208,11 +208,11 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                 }
             }
         }
-        // 如果ScriptConversion1All = true，ScriptConversion1 = "."
+        // 如果ScriptConversion1All = true，ScriptConversion1 = {'"."'}
         if (state.scriptConversion1All) {
             result["jsc"] = ".";
         }
-        // 如果ScriptConversion2All = true，ScriptConversion2 = "."
+        // 如果ScriptConversion2All = true，ScriptConversion2 = {'"."'}
         if (state.scriptConversion2All) {
             result["jsc2"] = ".";
         }
@@ -419,7 +419,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                     title="启用脚本转换1"
                 >
                     <div>
-                        根据关键词为脚本启用脚本转换(多关键词以{`"+"`}分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗)
+                        根据关键词为脚本启用脚本转换(多关键词以{`{""+""}`}分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗)
                     </div>
                     <AutoExpandingTextarea
                         value={state.scriptConversion1}
@@ -479,7 +479,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                     aria-label="保留重写"
                     title="保留重写"
                 >
-                    <span>根据关键词保留重写(即去掉注释符#) 多关键词以"+"分隔</span>
+                    <span>根据关键词保留重写(即去掉注释符#) 多关键词以{""+""}分隔</span>
                     <AutoExpandingTextarea
                         value={state.keepRewrite}
                         onChange={setKeepRewrite}
@@ -492,7 +492,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                     title="排除重写"
                 >
                     <div>
-                        根据关键词排除重写(即添加注释符#) 多关键词以"+"分隔
+                        根据关键词排除重写(即添加注释符#) 多关键词以{""+""}分隔
                     </div>
                     <AutoExpandingTextarea
                         value={state.excludeRewrite}
@@ -539,7 +539,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
         <AccordionItem key="3" aria-label="规则相关" title="规则相关">
             <Accordion variant="splitted" isCompact className="mt-2 px-0" >
                 <AccordionItem key="1" aria-label="保留规则" title="保留规则">
-                    <span>根据关键词保留规则(即去掉注释符#) 多关键词以"+"分隔</span>
+                    <span>根据关键词保留规则(即去掉注释符#) 多关键词以{""+""}分隔</span>
                     <AutoExpandingTextarea
                         value={state.keepRule}
                         onChange={setKeepRule}
@@ -548,7 +548,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                 </AccordionItem>
                 <AccordionItem key="2" aria-label="排除规则" title="排除规则">
                     <div>
-                        根据关键词排除规则(即添加注释符#) 多关键词以"+"分隔
+                        根据关键词排除规则(即添加注释符#) 多关键词以{""+""}分隔
                     </div>
                     <AutoExpandingTextarea
                         value={state.excludeRule}
@@ -564,7 +564,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
         <AccordionItem key="4" aria-label="修改 MITM 主机名" title="修改 MITM 主机名">
             <Accordion variant="splitted" isCompact className="mt-2 px-0" >
                 <AccordionItem key="1" aria-label="添加 MITM 主机名" title="添加 MITM 主机名">
-                    <span>添加 MITM 主机名 多主机名以","分隔</span>
+                    <span>添加 MITM 主机名 多主机名以{'","'}分隔</span>
                     <AutoExpandingTextarea
                         value={state.addMitmHosts}
                         onChange={setAddMitmHosts}
@@ -572,7 +572,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                 </AccordionItem>
                 <AccordionItem key="2" aria-label="移除 MITM 主机名" title="移除 MITM 主机名">
                     <div>
-                        从已有MITM主机名中删除主机名 多主机名以","分隔(需要传入完整主机名)
+                        从已有MITM主机名中删除主机名 多主机名以{'","'}分隔(需要传入完整主机名)
                     </div>
                     <AutoExpandingTextarea
                         value={state.removeMitmHosts}
@@ -588,7 +588,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
         <AccordionItem key="5" aria-label="修改定时任务" title="修改定时任务">
             <Accordion variant="splitted" isCompact className="mt-2 px-0" >
                 <AccordionItem key="1" aria-label="修改定时任务(cron)" title="修改定时任务(cron)">
-                    <span>根据关键词锁定cron脚本配合参数cronexp= 修改定时任务的cron表达式 多关键词用"+"分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用"."或"%20"替代</span>
+                    <span>根据关键词锁定cron脚本配合参数cronexp= 修改定时任务的cron表达式 多关键词用{""+""}分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用{'"."'}或{'"%20"'}替代</span>
                     <AutoExpandingTextarea
                         value={state.modifyCron}
                         onChange={setModifyCron}
@@ -610,7 +610,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
         <AccordionItem key="6" aria-label="修改参数" title="修改参数">
             <Accordion variant="splitted" isCompact className="mt-2 px-0" >
                 <AccordionItem key="1" aria-label="修改参数(arg)" title="修改参数(arg)">
-                    <span>arg= 根据关键词锁定脚本配合参数argv= 修改argument=的值 多关键词用"+"分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中 "+"必须用"t;add;"替代。</span>
+                    <span>arg= 根据关键词锁定脚本配合参数argv= 修改argument=的值 多关键词用{""+""}分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中 {""+""}必须用{'"t;add;"'}替代。</span>
                     <AutoExpandingTextarea
                         value={state.modifyArg}
                         onChange={setModifyArg}
@@ -631,7 +631,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
     const SNIExtended = (
         <AccordionItem key="7" aria-label="SNI 扩展匹配(extended-matching)" title="SNI 扩展匹配(extended-matching)">
             <div>
-                根据关键词开启 Surge 的 SNI 扩展匹配(extended-matching) 多关键词以{`"+"`}分隔
+                根据关键词开启 Surge 的 SNI 扩展匹配(extended-matching) 多关键词以{`{""+""}`}分隔
             </div>
             <AutoExpandingTextarea
                 value={state.sniExtendedMatching}
@@ -737,9 +737,9 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                 }
                 <Accordion
                     selectionMode="multiple"
-                    children={accordionChildren}
                     variant="splitted" isCompact className="mt-2 px-0"
                 >
+                    {accordionChildren}
                 </Accordion>
                 {noResolve}
                 {
