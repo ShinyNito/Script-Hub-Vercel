@@ -193,7 +193,6 @@ export async function GET(request: NextRequest, { params }: { params: { sourceUR
   const sufjsDelivr = jsDelivr ? '&jsDelivr=true' : '';
 
   let rewriteName = params.scriptName.substring(params.scriptName.lastIndexOf('/') + 1).split('.')[0];
-
   let name = "";
   let desc = "";
   let icon = "";

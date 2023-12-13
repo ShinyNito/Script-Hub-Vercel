@@ -15,10 +15,11 @@ const AutoExpandingTextarea: React.FC<AutoExpandingTextareaProps> = ({onChange, 
 
     return (
         <Textarea
-        labelPlacement="outside"
+            labelPlacement="outside"
             label={label}
             value={value}
             minRows={2}
+            className='mb-2'
             cacheMeasurements={true}
             onChange={handleInputChange}
         />

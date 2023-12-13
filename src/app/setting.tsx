@@ -77,7 +77,6 @@ type Action =
 const StateAlias = {
     "sourceType": "type",
     "targetType": "target",
-    "fileName": "fileName",
     "keepRewrite": "y",
     "keepRule": "y",
     "excludeRewrite": "x",
@@ -196,7 +195,6 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
 
     }
     const [state, dispatch] = useReducer(reducer, initialState);
-
     useEffect(() => {
         const result: { [key: string]: string } = {};
         for (const key in state) {
@@ -208,11 +206,9 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                 }
             }
         }
-        // 如果ScriptConversion1All = true，ScriptConversion1 = {'"."'}
         if (state.scriptConversion1All) {
             result["jsc"] = ".";
         }
-        // 如果ScriptConversion2All = true，ScriptConversion2 = {'"."'}
         if (state.scriptConversion2All) {
             result["jsc2"] = ".";
         }
@@ -370,21 +366,21 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
 
     //IP 规则开启不解析域名(即 no-resolve)
     const noResolve = (
-      
-            <Checkbox
-                className="mt-2 block"
-                isSelected={state.ipRuleNoResolve}
-                onValueChange={(value) => {
-                    setIpRuleNoResolve(value)
-                }}
-            >
-                IP 规则开启不解析域名(即 no-resolve)
-            </Checkbox>
+
+        <Checkbox
+            className="block"
+            isSelected={state.ipRuleNoResolve}
+            onValueChange={(value) => {
+                setIpRuleNoResolve(value)
+            }}
+        >
+            IP 规则开启不解析域名(即 no-resolve)
+        </Checkbox>
     )
     //总是在 $done(response) 里包一个 response
     const alwaysDoneResponse = (
         <Checkbox
-            className="mt-2 block"
+            className="block"
             isSelected={state.alwaysDoneResponse}
             onValueChange={setAlwaysDoneResponse}
         >
@@ -395,7 +391,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
     //兼容性转换 全部转换
     const compatibilityOnlyAll = (
         <Checkbox
-            className="mt-2 block"
+            className="block"
             isSelected={state.compatibilityOnlyAll}
             onValueChange={setCompatibilityOnlyAll}
         >
@@ -405,252 +401,271 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
 
     // 启动脚本转换
     const scriptConversion = (
-        <AccordionItem
-            key="2"
-            aria-label="启用脚本转换"
-            title="启用脚本转换"
-        >
-            <Accordion
-                variant="splitted" isCompact className="mt-2 px-0"
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+            <AccordionItem
+                key="2"
+                aria-label="启用脚本转换"
+                title="启用脚本转换"
             >
-                <AccordionItem
-                    key="1"
-                    aria-label="启用脚本转换1"
-                    title="启用脚本转换1"
+                <Accordion
+                    variant="splitted" isCompact className="mt-2 px-0"
                 >
-                    <div>
-                        根据关键词为脚本启用脚本转换(多关键词以{`{""+""}`}分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗)
-                    </div>
-                    <AutoExpandingTextarea
-                        value={state.scriptConversion1}
-                        onChange={setScriptConversion1}
-                    />
-                    {/* 全部转换 */}
-                    <Checkbox
-                        id="scriptConversion1All-checkbox"
-                        checked={state.scriptConversion1All}
-                        onChange={(e) => setScriptConversion1All(e.target.checked)}
-
-                    >全部转换</Checkbox>
-                    {/* 仅进行兼容性转换 */}
-                    <Checkbox
-                        id="compatibilityOnly-checkbox"
-                        checked={state.compatibilityOnly}
-                        onChange={(e) => setCompatibilityOnly(e.target.checked)}
-                    >仅进行兼容性转换</Checkbox>
-                </AccordionItem>
-                <AccordionItem
-                    key="2"
-                    aria-label="启用脚本转换2"
-                    title="启用脚本转换2"
-                >
-                    <div>
-                        根据关键词为脚本启用脚本转换(与 启用脚本转换 1 的区别: 总是会在$done(body)里包一个response)
-                    </div>
-                    <AutoExpandingTextarea
-                        value={state.scriptConversion2}
-                        onChange={setScriptConversion2}
-                    />
-                    {/* 全部转换 */}
-                    <Checkbox
-                        id="scriptConversion2All-checkbox"
-                        checked={state.scriptConversion2All}
-                        onChange={(e) => setScriptConversion2All(e.target.checked)}
+                    <AccordionItem
+                        key="1"
+                        aria-label="启用脚本转换1"
+                        title="启用脚本转换1"
                     >
-                        全部转换
-                    </Checkbox>
-                    {/* 仅进行兼容性转换 */}
-                    <Checkbox
-                        id="compatibilityOnly-checkbox"
-                        checked={state.compatibilityOnly}
-                        onChange={(e) => setCompatibilityOnly(e.target.checked)}
-                    > 仅进行兼容性转换</Checkbox>
-                </AccordionItem>
-            </Accordion>
-        </AccordionItem>
+                        <div>
+                            根据关键词为脚本启用脚本转换(多关键词以{`"+"`}分隔，主要用途 将使用了QX独有api的脚本转换为通用脚本，谨慎开启，大部分脚本本身就通用，无差别启用，只会徒增功耗)
+                        </div>
+                        <AutoExpandingTextarea
+                            value={state.scriptConversion1}
+                            onChange={setScriptConversion1}
+                        />
+                        {/* 全部转换 */}
+                        <Checkbox
+                            className="block"
+                            checked={state.scriptConversion1All}
+                            onChange={(e) => setScriptConversion1All(e.target.checked)}
+
+                        >全部转换</Checkbox>
+                        {/* 仅进行兼容性转换 */}
+                        <Checkbox
+                            className="block"
+                            checked={state.compatibilityOnly}
+                            onChange={(e) => setCompatibilityOnly(e.target.checked)}
+                        >仅进行兼容性转换</Checkbox>
+                    </AccordionItem>
+                    <AccordionItem
+                        key="2"
+                        aria-label="启用脚本转换2"
+                        title="启用脚本转换2"
+                    >
+                        <div>
+                            根据关键词为脚本启用脚本转换(与 启用脚本转换 1 的区别: 总是会在$done(body)里包一个response)
+                        </div>
+                        <AutoExpandingTextarea
+                            value={state.scriptConversion2}
+                            onChange={setScriptConversion2}
+                        />
+                        {/* 全部转换 */}
+                        <Checkbox
+                            className="block"
+                            checked={state.scriptConversion2All}
+                            onChange={(e) => setScriptConversion2All(e.target.checked)}
+                        >
+                            全部转换
+                        </Checkbox>
+                        {/* 仅进行兼容性转换 */}
+                        <Checkbox
+                             className="block"
+                            checked={state.compatibilityOnly}
+                            onChange={(e) => setCompatibilityOnly(e.target.checked)}
+                        > 仅进行兼容性转换</Checkbox>
+                    </AccordionItem>
+                </Accordion>
+            </AccordionItem>
+        </Accordion>
     )
 
     //重写相关
     const rewriteRelated = (
-        <AccordionItem key="3" aria-label="重写相关" title="重写相关">
-            <Accordion variant="splitted" isCompact className="mt-2 px-0" >
-                <AccordionItem
-                    key="1"
-                    aria-label="保留重写"
-                    title="保留重写"
-                >
-                    <span>根据关键词保留重写(即去掉注释符#) 多关键词以{""+""}分隔</span>
-                    <AutoExpandingTextarea
-                        value={state.keepRewrite}
-                        onChange={setKeepRewrite}
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+            <AccordionItem key="3" aria-label="重写相关" title="重写相关">
+                <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+                    <AccordionItem
+                        key="1"
+                        aria-label="保留重写"
+                        title="保留重写"
                     >
-                    </AutoExpandingTextarea>
-                </AccordionItem>
-                <AccordionItem
-                    key="2"
-                    aria-label="排除重写"
-                    title="排除重写"
+                        <span>根据关键词保留重写(即去掉注释符#) 多关键词以{"" + ""}分隔</span>
+                        <AutoExpandingTextarea
+                            value={state.keepRewrite}
+                            onChange={setKeepRewrite}
+                        >
+                        </AutoExpandingTextarea>
+                    </AccordionItem>
+                    <AccordionItem
+                        key="2"
+                        className="my-2"
+                        aria-label="排除重写"
+                        title="排除重写"
+                    >
+                        <div>
+                            根据关键词排除重写(即添加注释符#) 多关键词以{"" + ""}分隔
+                        </div>
+                        <AutoExpandingTextarea
+                            value={state.excludeRewrite}
+                            onChange={setExcludeRewrite}
+                        ></AutoExpandingTextarea>
+                    </AccordionItem>
+                </Accordion>
+                {/* 将 MitM 主机名同步至 force-http-engine-hosts */}
+                <Checkbox
+                  className="block"
+                    checked={state.syncMitmHostsToHttpEngine}
+                    onChange={(e) => setSyncMitmHostsToHttpEngine(e.target.checked)}
                 >
-                    <div>
-                        根据关键词排除重写(即添加注释符#) 多关键词以{""+""}分隔
-                    </div>
-                    <AutoExpandingTextarea
-                        value={state.excludeRewrite}
-                        onChange={setExcludeRewrite}
-                    ></AutoExpandingTextarea>
-                </AccordionItem>
-            </Accordion>
-            {/* 将 MitM 主机名同步至 force-http-engine-hosts */}
-            <Checkbox
-                id="syncMitmHostsToHttpEngine-checkbox"
-                checked={state.syncMitmHostsToHttpEngine}
-                onChange={(e) => setSyncMitmHostsToHttpEngine(e.target.checked)}
-            >
-                将 MitM 主机名同步至 force-http-engine-hosts
-            </Checkbox>
-            {/* 从转换结果中剔除被注释的重写 */}
-            <Checkbox
-                id="removeCommentedRewrite-checkbox"
-                checked={state.removeCommentedRewrite}
-                onChange={(e) => setRemoveCommentedRewrite(e.target.checked)}
-            >
-                从转换结果中剔除被注释的重写
-            </Checkbox>
-            {/* 保留 Map Local/echo-response 中的 header/content-type(占用内存多 但响应快) */}
-            <Checkbox
-                id="keepMapLocalHeader-checkbox"
-                checked={state.keepMapLocalHeader}
-                onChange={(e) => setKeepMapLocalHeader(e.target.checked)}
-            >
-                保留 Map Local/echo-response 中的 header/content-type(占用内存多 但响应快)
-            </Checkbox>
-            {/* GitHub 转 jsDelivr(修复 content-type) */}
-            <Checkbox
-                id="gitHubToJsDelivr-checkbox"
-                checked={state.gitHubToJsDelivr}
-                onChange={(e) => setGitHubToJsDelivr(e.target.checked)}
-            >
-                GitHub 转 jsDelivr(修复 content-type)</Checkbox>
-        </AccordionItem>
+                    将 MitM 主机名同步至 force-http-engine-hosts
+                </Checkbox>
+                {/* 从转换结果中剔除被注释的重写 */}
+                <Checkbox
+                   className="block"
+                    checked={state.removeCommentedRewrite}
+                    onChange={(e) => setRemoveCommentedRewrite(e.target.checked)}
+                >
+                    从转换结果中剔除被注释的重写
+                </Checkbox>
+                {/* 保留 Map Local/echo-response 中的 header/content-type(占用内存多 但响应快) */}
+                <Checkbox
+                 className="block"
+                    checked={state.keepMapLocalHeader}
+                    onChange={(e) => setKeepMapLocalHeader(e.target.checked)}
+                >
+                    保留 Map Local/echo-response 中的 header/content-type(占用内存多 但响应快)
+                </Checkbox>
+                {/* GitHub 转 jsDelivr(修复 content-type) */}
+                <Checkbox
+                  className="block"
+                    checked={state.gitHubToJsDelivr}
+                    onChange={(e) => setGitHubToJsDelivr(e.target.checked)}
+                >
+                    GitHub 转 jsDelivr(修复 content-type)</Checkbox>
+            </AccordionItem>
+        </Accordion>
+
     )
 
     //规则相关
     const ruleRelated = (
-        <AccordionItem key="3" aria-label="规则相关" title="规则相关">
-            <Accordion variant="splitted" isCompact className="mt-2 px-0" >
-                <AccordionItem key="1" aria-label="保留规则" title="保留规则">
-                    <span>根据关键词保留规则(即去掉注释符#) 多关键词以{""+""}分隔</span>
-                    <AutoExpandingTextarea
-                        value={state.keepRule}
-                        onChange={setKeepRule}
-                    />
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+            <AccordionItem key="3" aria-label="规则相关" title="规则相关">
+                <Accordion variant="splitted" isCompact className="mt-2 px-0" >
+                    <AccordionItem key="1" aria-label="保留规则" title="保留规则">
+                        <span>根据关键词保留规则(即去掉注释符#) 多关键词以{"" + ""}分隔</span>
+                        <AutoExpandingTextarea
+                            value={state.keepRule}
+                            onChange={setKeepRule}
+                        />
 
-                </AccordionItem>
-                <AccordionItem key="2" aria-label="排除规则" title="排除规则">
-                    <div>
-                        根据关键词排除规则(即添加注释符#) 多关键词以{""+""}分隔
-                    </div>
-                    <AutoExpandingTextarea
-                        value={state.excludeRule}
-                        onChange={setExcludeRule}
-                    />
-                </AccordionItem>
-            </Accordion>
-        </AccordionItem>
+                    </AccordionItem>
+                    <AccordionItem key="2" aria-label="排除规则" title="排除规则">
+                        <div>
+                            根据关键词排除规则(即添加注释符#) 多关键词以{"" + ""}分隔
+                        </div>
+                        <AutoExpandingTextarea
+                            value={state.excludeRule}
+                            onChange={setExcludeRule}
+                        />
+                    </AccordionItem>
+                </Accordion>
+            </AccordionItem>
+        </Accordion>
     )
 
     //修改 MITM 主机名
     const modifyMitmHosts = (
-        <AccordionItem key="4" aria-label="修改 MITM 主机名" title="修改 MITM 主机名">
-            <Accordion variant="splitted" isCompact className="mt-2 px-0" >
-                <AccordionItem key="1" aria-label="添加 MITM 主机名" title="添加 MITM 主机名">
-                    <span>添加 MITM 主机名 多主机名以{'","'}分隔</span>
-                    <AutoExpandingTextarea
-                        value={state.addMitmHosts}
-                        onChange={setAddMitmHosts}
-                    />
-                </AccordionItem>
-                <AccordionItem key="2" aria-label="移除 MITM 主机名" title="移除 MITM 主机名">
-                    <div>
-                        从已有MITM主机名中删除主机名 多主机名以{'","'}分隔(需要传入完整主机名)
-                    </div>
-                    <AutoExpandingTextarea
-                        value={state.removeMitmHosts}
-                        onChange={setRemoveMitmHosts}
-                    />
-                </AccordionItem>
-            </Accordion>
-        </AccordionItem>
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+            <AccordionItem key="4" aria-label="修改 MITM 主机名" title="修改 MITM 主机名">
+                <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+                    <AccordionItem key="1" aria-label="添加 MITM 主机名" title="添加 MITM 主机名">
+                        <span>添加 MITM 主机名 多主机名以{'","'}分隔</span>
+                        <AutoExpandingTextarea
+                            value={state.addMitmHosts}
+                            onChange={setAddMitmHosts}
+                        />
+                    </AccordionItem>
+                    <AccordionItem key="2" aria-label="移除 MITM 主机名" title="移除 MITM 主机名">
+                        <div>
+                            从已有MITM主机名中删除主机名 多主机名以{'","'}分隔(需要传入完整主机名)
+                        </div>
+                        <AutoExpandingTextarea
+                            value={state.removeMitmHosts}
+                            onChange={setRemoveMitmHosts}
+                        />
+                    </AccordionItem>
+                </Accordion>
+            </AccordionItem>
+        </Accordion>
     )
 
     //修改定时任务
     const modifyCron = (
-        <AccordionItem key="5" aria-label="修改定时任务" title="修改定时任务">
-            <Accordion variant="splitted" isCompact className="mt-2 px-0" >
-                <AccordionItem key="1" aria-label="修改定时任务(cron)" title="修改定时任务(cron)">
-                    <span>根据关键词锁定cron脚本配合参数cronexp= 修改定时任务的cron表达式 多关键词用{""+""}分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用{'"."'}或{'"%20"'}替代</span>
-                    <AutoExpandingTextarea
-                        value={state.modifyCron}
-                        onChange={setModifyCron}
-                    />
-                </AccordionItem>
-                <AccordionItem key="2" aria-label="修改定时任务(cronexp)" title="修改定时任务(cronexp)">
-                    <span>见 cron= 参数说明</span>
-                    <AutoExpandingTextarea
-                        value={state.modifyCronexp}
-                        onChange={setModifyCronexp}
-                    />
-                </AccordionItem>
-            </Accordion>
-        </AccordionItem>
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+            <AccordionItem key="5" aria-label="修改定时任务" title="修改定时任务">
+                <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+                    <AccordionItem key="1" aria-label="修改定时任务(cron)" title="修改定时任务(cron)">
+                        <span>根据关键词锁定cron脚本配合参数cronexp= 修改定时任务的cron表达式 多关键词用{"" + ""}分隔，cron=传入了几项，cronexp=也必须对应传入几项。 cron表达式中空格可用{'"."'}或{'"%20"'}替代</span>
+                        <AutoExpandingTextarea
+                            value={state.modifyCron}
+                            onChange={setModifyCron}
+                        />
+                    </AccordionItem>
+                    <AccordionItem key="2" aria-label="修改定时任务(cronexp)" title="修改定时任务(cronexp)">
+                        <span>见 cron= 参数说明</span>
+                        <AutoExpandingTextarea
+                            value={state.modifyCronexp}
+                            onChange={setModifyCronexp}
+                        />
+                    </AccordionItem>
+                </Accordion>
+            </AccordionItem>
+        </Accordion>
     )
 
     //修改参数
     const modifyArg = (
-        <AccordionItem key="6" aria-label="修改参数" title="修改参数">
-            <Accordion variant="splitted" isCompact className="mt-2 px-0" >
-                <AccordionItem key="1" aria-label="修改参数(arg)" title="修改参数(arg)">
-                    <span>arg= 根据关键词锁定脚本配合参数argv= 修改argument=的值 多关键词用{""+""}分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中 {""+""}必须用{'"t;add;"'}替代。</span>
-                    <AutoExpandingTextarea
-                        value={state.modifyArg}
-                        onChange={setModifyArg}
-                    />
-                </AccordionItem>
-                <AccordionItem key="2" aria-label="修改参数(argv)" title="修改参数(argv)">
-                    <span>见 arg= 参数说明</span>
-                    <AutoExpandingTextarea
-                        value={state.modifyArgv}
-                        onChange={setModifyArgv}
-                    />
-                </AccordionItem>
-            </Accordion>
-        </AccordionItem>
+
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+            <AccordionItem key="6" aria-label="修改参数" title="修改参数" >
+                <Accordion variant="splitted" isCompact className="mt-2 px-0" selectionMode="multiple">
+                    <AccordionItem key="1" aria-label="修改参数(arg)" title="修改参数(arg)">
+                        <span>arg= 根据关键词锁定脚本配合参数argv= 修改argument=的值 多关键词用{"" + ""}分隔，arg=传入了几项，argv=也必须对应传入几项。 argument中 {"" + ""}必须用{'"t;add;"'}替代。</span>
+                        <AutoExpandingTextarea
+                            value={state.modifyArg}
+                            onChange={setModifyArg}
+                        />
+                    </AccordionItem>
+                    <AccordionItem key="2" aria-label="修改参数(argv)" title="修改参数(argv)">
+                        <span>见 arg= 参数说明</span>
+                        <AutoExpandingTextarea
+                            value={state.modifyArgv}
+                            onChange={setModifyArgv}
+                        />
+                    </AccordionItem>
+                </Accordion>
+            </AccordionItem>
+        </Accordion>
     )
 
     //SNI 扩展匹配(extended-matching)
     const SNIExtended = (
-        <AccordionItem key="7" aria-label="SNI 扩展匹配(extended-matching)" title="SNI 扩展匹配(extended-matching)">
-            <div>
-                根据关键词开启 Surge 的 SNI 扩展匹配(extended-matching) 多关键词以{`{""+""}`}分隔
-            </div>
-            <AutoExpandingTextarea
-                value={state.sniExtendedMatching}
-                onChange={setSniExtendedMatching}
-            />
-        </AccordionItem>
+        <Accordion variant="splitted" isCompact className="my-2 px-0" selectionMode="multiple" >
+            <AccordionItem key="7" aria-label="SNI 扩展匹配(extended-matching)" title="SNI 扩展匹配(extended-matching)">
+                <div>
+                    根据关键词开启 Surge 的 SNI 扩展匹配(extended-matching) 多关键词以{`{""+""}`}分隔
+                </div>
+                <AutoExpandingTextarea
+                    value={state.sniExtendedMatching}
+                    onChange={setSniExtendedMatching}
+                />
+            </AccordionItem>
+        </Accordion>
     )
     const fileName = (
-        <AccordionItem
-            key="1"
-            aria-label="启用脚本转移"
-            title="文件名"
-        >
-            <AutoExpandingTextarea
-                value={state.fileName}
-                onChange={setFileName}
-            />
+        <Accordion variant="splitted" isCompact className="mt-2 px-0" >
+            <AccordionItem
+                key="1"
+                aria-label="启用脚本转移"
+                title="文件名"
+            >
+                <AutoExpandingTextarea
+                    value={state.fileName}
+                    onChange={setFileName}
+                />
 
-        </AccordionItem>
+            </AccordionItem>
+        </Accordion>
     )
 
     const [accordionChildren, setAccordionChildren] = useState<JSX.Element[]>([
@@ -662,8 +677,6 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
         modifyArg,
         SNIExtended,
     ]);
-
-
 
 
     useEffect(() => {
@@ -704,6 +717,7 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                         placeholder="请选择来源类型"
                         labelPlacement="outside"
                         value={state.sourceType}
+                        className="w-full"
                         onChange={(e) => {
                             setSourceType(e.target.value as string);
                         }}
@@ -716,39 +730,54 @@ export default function Setting({ onUrlChange }: { onUrlChange: (url: string) =>
                     </Select>
                 </div>
                 {
-                    state.sourceType ?
-                        <div className="col-span-full pt-2">
-                            <Select
-                                label="目标类型"
-                                placeholder="请选择目标类型"
-                                labelPlacement="outside"
-                                value={state.targetType}
-                                onChange={(e) => {
-                                    setTargetType(e.target.value as string);
-                                }}
-                            >
-                                {targetTypeOptions.map((animal) => (
-                                    <SelectItem key={animal.value} value={animal.value}>
-                                        {animal.label}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        </div> : null
+                    state.sourceType &&
+                    <div className="col-span-full pt-2">
+                        <Select
+                            label="目标类型"
+                            placeholder="请选择目标类型"
+                            labelPlacement="outside"
+                            value={state.targetType}
+                            onChange={(e) => {
+                                setTargetType(e.target.value as string);
+                            }}
+                        >
+                            {targetTypeOptions.map((animal) => (
+                                <SelectItem key={animal.value} value={animal.value}>
+                                    {animal.label}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                    </div>
                 }
-                <Accordion
-                    selectionMode="multiple"
-                    variant="splitted" isCompact className="mt-2 px-0"
-                >
-                    {accordionChildren}
-                </Accordion>
-                {noResolve}
-                {
-                    state.sourceType !== "rule-set" && <>
-                        {alwaysDoneResponse}
-                        {compatibilityOnlyAll}
-                    </>
-                }
-              
+                {fileName}
+                <>
+                    {
+                        (() => {
+                            if (state.sourceType === "rule-set") {
+                                return (
+                                    <>
+                                        {ruleRelated}
+                                        {noResolve}
+                                    </>
+                                )
+                            } else {
+                                return (
+                                    <>
+                                        {scriptConversion}
+                                        {rewriteRelated}
+                                        {modifyMitmHosts}
+                                        {modifyCron}
+                                        {modifyArg}
+                                        {SNIExtended}
+                                        {noResolve}
+                                        {alwaysDoneResponse}
+                                        {compatibilityOnlyAll}
+                                    </>
+                                )
+                            }
+                        })()
+                    }
+                </>
             </div>
         </div>
     );
